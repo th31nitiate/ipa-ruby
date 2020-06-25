@@ -2,7 +2,7 @@
 #
 # client.rb
 #
-# Author: Matteo Cerutti <matteo.cerutti@hotmail.co.uk>
+# Author: m3rl1n th31nitiate
 #
 
 require 'httpclient'
@@ -10,48 +10,70 @@ require 'base64'
 require 'gssapi'
 require 'json'
 
+# Not sure if the GSSAPI is fully funcational requires furher testing
+
+
 module IPA
   class Client
     attr_reader :uri, :http, :headers
 
-    def initialize(host: nil, ca_cert: '/etc/ipa/ca.crt')
+    def initialize(host: nil, ca_cert: '/etc/ipa/ca.crt', username: nil, password: nil)
       raise ArgumentError, 'Missing FreeIPA host' unless host
+
 
       @uri = URI.parse("https://#{host}/ipa/session/json")
 
+      @host = host
       @http = HTTPClient.new
       @http.ssl_config.set_trust_ca(ca_cert)
-      @headers = {'referer' => "https://#{uri.host}/ipa/json", 'Content-Type' => 'application/json', 'Accept' => 'application/json'}
+      @headers = { 'referer' => "https://#{uri.host}/ipa/json", 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
+      @method = :keberose
+      # Username has to be set to enable HTTP based authentication
+      if username
+        @method = :user_pass
+        @credentials = { 'user' => username.to_s, 'password' => password.to_s }
+      end
 
-      self.login(host)
+      login(host)
     end
 
+
+    # Need to change login username and password information
     def login(host)
       # Set the timeout to 15 minutes
       @session_timeout = (Time.new.to_i + 900)
 
-      gssapi = GSSAPI::Simple.new(@uri.host, 'HTTP')
-      # Initiate the security context
-      token = gssapi.init_context
+      login_headers = { 'referer' => "https://#{uri.host}/ipa/ui/index.html", 'Accept' => 'application/json' }
 
-      login_uri = URI.parse("https://#{host}/ipa/session/login_kerberos")
-      login_request = {:method => "ping", :params => [[], {}]}
-      login_headers = {'referer' => "https://#{uri.host}/ipa/ui/index.html", 'Content-Type' => 'application/json', 'Accept' => 'application/json', 'Authorization' => "Negotiate #{Base64.strict_encode64(token)}"}
+      if @method == :keberose
+        login_method = "login_kerberos"
+        gssapi = GSSAPI::Simple.new(@uri.host, 'HTTP')
+        # Initiate the security context
+        token = gssapi.init_context
+        login_headers.merge!('Authorization' => "Negotiate #{Base64.strict_encode64(token)}", 'Content-Type' => 'application/json')
+        login_request = { method: 'ping', params: [[], {}] }
+      elsif @method == :user_pass
+        login_method = "login_password"
+        login_headers.merge!('Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'text/plain')
+        login_request = { 'user' => @username.to_s, 'password' => @password.to_s }
+      end
 
-      self.http.post(login_uri, login_request.to_json, login_headers)
+      login_uri = URI.parse("https://#{uri.host}/ipa/session/#{login_method}")
+
+      self.http.post(login_uri, login_request, login_headers)
     end
 
     def api_post(method: nil, item: [], params: {})
       raise ArgumentError, 'Missing method in API request' unless method
 
       if Time.new.to_i > @session_timeout then
-        self.login
+        self.login(@host)
       end
 
       request = {}
       request[:method] = method
       request[:params] = [[item || []], params]
-      resp = self.http.post(self.uri, request.to_json, self.headers)
+      resp = http.post(uri, request.to_json, headers)
       JSON.parse(resp.body)
     end
 
@@ -60,7 +82,7 @@ module IPA
 
       params[:all] = all
 
-      self.api_post(method: 'hostgroup_show', item: hostgroup, params: params)
+      api_post(method: 'hostgroup_show', item: hostgroup, params: params)
     end
 
     def hostgroup_add(hostgroup: nil, description: nil, all: false, params: {})
@@ -70,7 +92,7 @@ module IPA
       params[:all] = all
       params[:description] = description
 
-      self.api_post(method: 'hostgroup_add', item: hostgroup, params: params)
+      api_post(method: 'hostgroup_add', item: hostgroup, params: params)
     end
 
     def hostgroup_add_member(hostgroup: nil, hostnames: nil, params: {})
@@ -85,7 +107,7 @@ module IPA
         params[:host] = [hostnames]
       end
 
-      self.api_post(method: 'hostgroup_add_member', item: hostgroup, params: params)
+      api_post(method: 'hostgroup_add_member', item: hostgroup, params: params)
     end
 
     def host_add(hostname: nil, all: false, force: false, random: nil, userpassword: nil, params: {})
@@ -96,19 +118,19 @@ module IPA
       params[:random] = random unless random.nil?
       params[:userpassword] = userpassword unless userpassword.nil?
 
-      self.api_post(method: 'host_add', item: hostname, params: params)
+      api_post(method: 'host_add', item: hostname, params: params)
     end
 
     def host_del(hostname: nil, params: {})
       raise ArgumentError, 'Hostname is required' unless hostname
 
-      self.api_post(method: 'host_del', item: hostname, params: params)
+      api_post(method: 'host_del', item: hostname, params: params)
     end
 
     def host_find(hostname: nil, all: false, params: {})
       params[:all] = all
 
-      self.api_post(method: 'host_find', item: hostname, params: params)
+      api_post(method: 'host_find', item: hostname, params: params)
     end
 
     def host_show(hostname: nil, all: false, params: {})
@@ -116,11 +138,11 @@ module IPA
 
       params[:all] = all
 
-      self.api_post(method: 'host_show', item: hostname, params: params)
+      api_post(method: 'host_show', item: hostname, params: params)
     end
 
     def host_exists?(hostname)
-      resp = self.host_show(hostname: hostname)
+      resp = host_show(hostname: hostname)
       if resp['error']
         false
       else
