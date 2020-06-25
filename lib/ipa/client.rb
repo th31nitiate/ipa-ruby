@@ -12,7 +12,6 @@ require 'json'
 
 # Not sure if the GSSAPI is fully funcational requires furher testing
 
-
 module IPA
   class Client
     attr_reader :uri, :http, :headers
@@ -23,10 +22,9 @@ module IPA
 
       @uri = URI.parse("https://#{host}/ipa/session/json")
 
-      @host = host
       @http = HTTPClient.new
       @http.ssl_config.set_trust_ca(ca_cert)
-      @headers = { 'referer' => "https://#{uri.host}/ipa/json", 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
+      @headers = { 'referer' => "https://#{@uri.host}/ipa/json", 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
       @method = :keberose
       # Username has to be set to enable HTTP based authentication
       if username
@@ -34,7 +32,7 @@ module IPA
         @credentials = { 'user' => username.to_s, 'password' => password.to_s }
       end
 
-      login(host)
+      login(@uri.host)
     end
 
 
@@ -43,7 +41,7 @@ module IPA
       # Set the timeout to 15 minutes
       @session_timeout = (Time.new.to_i + 900)
 
-      login_headers = { 'referer' => "https://#{uri.host}/ipa/ui/index.html", 'Accept' => 'application/json' }
+      login_headers = { 'referer' => "https://#{@uri.host}/ipa/ui/index.html", 'Accept' => 'application/json' }
 
       if @method == :keberose
         login_method = "login_kerberos"
@@ -55,12 +53,12 @@ module IPA
       elsif @method == :user_pass
         login_method = "login_password"
         login_headers.merge!('Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'text/plain')
-        login_request = { 'user' => @username.to_s, 'password' => @password.to_s }
+        login_request = @credentials
       end
 
-      login_uri = URI.parse("https://#{uri.host}/ipa/session/#{login_method}")
+      login_uri = URI.parse("https://#{@uri.host}/ipa/session/#{login_method}")
 
-      self.http.post(login_uri, login_request, login_headers)
+      @http.post(login_uri, login_request, login_headers)
     end
 
     def api_post(method: nil, item: [], params: {})
@@ -73,7 +71,7 @@ module IPA
       request = {}
       request[:method] = method
       request[:params] = [[item || []], params]
-      resp = http.post(uri, request.to_json, headers)
+      resp = @http.post(@uri, request.to_json, @headers)
       JSON.parse(resp.body)
     end
 
