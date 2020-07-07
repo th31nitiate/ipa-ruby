@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+
+<title>README - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+  var index_rel_prefix = "./";
+</script>
+
+<script src="./js/navigation.js" defer></script>
+<script src="./js/search.js" defer></script>
+<script src="./js/search_index.js" defer></script>
+<script src="./js/searcher.js" defer></script>
+<script src="./js/darkfish.js" defer></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+
+<body id="top" role="document" class="file">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+<div class="nav-section">
+  <h3>Table of Contents</h3>
+
+  <ul class="link-list" role="directory">
+    <li><a href="#label-Ruby+client+library+for+FreeIPA+JSON+API">Ruby client library for FreeIPA JSON API</a>
+    <li><a href="#label-Install">Install</a>
+    <li><a href="#label-Usage">Usage</a>
+    <li><a href="#label-Todo">Todo</a>
+    <li><a href="#label-Contact">Contact</a>
+  </ul>
+</div>
+
+
+  <div id="project-metadata">
+    <div id="fileindex-section" class="nav-section">
+  <h3>Pages</h3>
+
+  <ul class="link-list">
+  
+    <li><a href="./LICENSE.html">LICENSE</a>
+  
+    <li><a href="./README_md.html">README</a>
+  
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-label="Page README.md">
+
+<h1 id="label-Ruby+client+library+for+FreeIPA+JSON+API">Ruby client library for FreeIPA JSON API<span><a href="#label-Ruby+client+library+for+FreeIPA+JSON+API">&para;</a> <a href="#top">&uarr;</a></span></h1>
+
+<p>This is a simple Ruby client library that allows to interact with the FreeIPA JSON API. It currently only supports authenticating via Kerberos/GSSAPI tickets.</p>
+
+<p>Pull requests to add additional API features are very welcome. I only implemented what I needed.</p>
+
+<h2 id="label-Install">Install<span><a href="#label-Install">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>To install it simply issue the following command:</p>
+
+<pre class="ruby"><span class="ruby-identifier">gem</span> <span class="ruby-identifier">install</span> <span class="ruby-identifier">ipa</span><span class="ruby-operator">-</span><span class="ruby-identifier">ruby</span>
+</pre>
+
+<h2 id="label-Usage">Usage<span><a href="#label-Usage">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>You can optionally pass a <code>ca_cert</code> keyword argument specifying the path to the FreeIPA CA certificate. Default is /etc/ipa/ca.crt. <code> require &#39;ipa/client&#39; ipa = IPA::Client.new(host: &#39;ipa.example.org&#39;) </code></p>
+
+<p>Note that additional parameters can be passed via the <code>params</code> keyword argument.</p>
+
+<p>Add a host (with a random password): <code> ipa.host_add(hostname: &#39;foo.example.org&#39;, force: true, random: true, all: true) </code></p>
+
+<p>Add a host (with a specific password) <code> ipa.host_add(hostname: &#39;foo.example.org&#39;, force: true, userpassword: &#39;bar&#39;, all: true) </code></p>
+
+<p>Delete a host: <code> ipa.host_del(hostname: &#39;foo.example.org&#39;) </code></p>
+
+<p>Show a host: <code> ipa.host_show(hostname: &#39;foo.example.org&#39;, all: true) </code></p>
+
+<p>Find hosts: <code> ipa.host_find(all: true, params: {:in_hostgroup =&gt; true}) </code></p>
+
+<p>Check if a host exists <code> if ipa.host_exists?(&#39;foo.example.org)   puts &quot;Yep :)&quot; else   puts &quot;Nope :(&quot; end </code></p>
+
+<h2 id="label-Todo">Todo<span><a href="#label-Todo">&para;</a> <a href="#top">&uarr;</a></span></h2>
+<ul><li>
+<p>Implement user API</p>
+</li><li>
+<p>Implement group API</p>
+</li><li>
+<p>Implement hostgroup API</p>
+</li><li>
+<p>Implement sudocmd API</p>
+</li><li>
+<p>Implement sudocmdgroup API</p>
+</li><li>
+<p>Implement hbacrule API</p>
+</li><li>
+<p>Implement hbacsvcgroup API</p>
+</li></ul>
+
+<h2 id="label-Contact">Contact<span><a href="#label-Contact">&para;</a> <a href="#top">&uarr;</a></span></h2>
+
+<p>Matteo Cerutti - matteo.cerutti@hotmail.co.uk</p>
+
+</main>
+
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="https://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.2.1.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

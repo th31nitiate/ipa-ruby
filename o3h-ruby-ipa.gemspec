@@ -10,9 +10,9 @@ Gem::Specification.new do |s|
   s.date = Date.today.to_s
   s.description = 'Ruby client library for FreeIPA JSON API'
   s.email = '<m3rl1n@th31nitiate.xyz>'
-  s.files = Dir.glob('{lib}/**/*') + %w(LICENSE README.md)
-  s.require_paths = ["lib"]
-  s.homepage = 'https://github.com/th31nitiate/ipa-ruby'
+  s.files = Dir.glob('{lib}/**/*') + %w[LICENSE README.md]
+  s.require_paths = ['lib']
+  s.homepage = 'https://github.com/th31nitiate/o3h-ruby-ipa'
   s.license = 'Apache 2.0'
   s.summary = 'Ruby client library that allows to interact with the FreeIPA JSON API'
   s.version = IPA.version
