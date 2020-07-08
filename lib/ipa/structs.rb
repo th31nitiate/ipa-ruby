@@ -1,0 +1,3 @@
+#This lib would be used to ensure simplicity when using other sections of the IPA lib by defining structures
+
+User = Struct.new(:uid, :givenname, :sn, :cn, :displayname, :initials, :homedirectory, :gecos, :loginshell, :krbcanonicalname, :krbprincipalname, :krbprincipalexpiration, :krbpasswordexpiration, :mail, :userpassword, :random, :randompassword, :uidnumber, :gidnumber, :street, :l, :st, :postalcode, :telephonenumber, :mobile, :pager, :facsimiletelephonenumber, :ou, :title, :manager, :carlicense, :ipasshpubkey, :sshpubkeyfp, :ipauserauthtype, :userclass, :ipatokenradiusconfiglink, :ipatokenradiususername, :departmentnumber, :employeenumber, :employeetype, :preferredlanguage, :usercertificate, :ipacertmapdata, :nsaccountlock, :preserved)

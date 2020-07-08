@@ -35,9 +35,9 @@ require 'httpclient'
 require 'base64'
 require 'gssapi'
 require 'json'
+require 'pry'
 
 # Not sure if the GSSAPI is fully functional requires further testing
-User = Struct.new(:uid, :givenname, :sn, :cn, :displayname, :initials, :homedirectory, :gecos, :loginshell)
 
 module IPA
   class Client
@@ -62,7 +62,6 @@ module IPA
       login(@uri.host)
     end
 
-
     # Need to change login username and password information
     def login(host)
       # Set the timeout to 15 minutes
@@ -85,24 +84,35 @@ module IPA
 
       login_uri = URI.parse("https://#{@uri.host}/ipa/session/#{login_method}")
 
-      @http.post(login_uri, login_request, login_headers)
+      resp = @http.post(login_uri, login_request, login_headers)
+
+      return unless resp.status != 200
+
+      # invalid passowrd could also mean invalid username
+      puts "HTTP #{resp.status.to_s + ':' + resp.reason} Error authenticating user: #{resp.headers['X-IPA-Rejection-Reason']}"
     end
 
+    # Consider using catch throw here when working with large amount os data
     def api_post(method: nil, item: [], params: {})
       raise ArgumentError, 'Missing method in API request' unless method
 
       if Time.new.to_i > @session_timeout then
-        self.login(@host)
+        login(@host)
       end
 
       request = {}
       request[:method] = method
       request[:params] = [[item || []], params]
-      resp = @http.post(@uri, request.to_json, @headers)
-      JSON.parse(resp.body)['result']['result']
+      # We use a StandardError since it is based on the HTTP response code with a JSON payload definition
+      begin
+        resp = @http.post(@uri, request.to_json, @headers)
+        JSON.parse(resp.body)['result']['result']
+      rescue StandardError
+        puts "The following error has occurred #{JSON.parse(resp.body)['error']['message']}"
+      end
     end
 
-    #This method can be used to view Host avalible with in a group in IPA
+    # This method can be used to view Host avalible with in a group in IPA
     def hostgroup_show(hostgroup: nil,all: false, params: {})
       raise ArgumentError, 'Hostgroup is required' unless hostgroup
 
@@ -111,7 +121,7 @@ module IPA
       api_post(method: 'hostgroup_show', item: hostgroup, params: params)
     end
 
-    #This method is used to create an empty host group
+    # This method is used to create an empty host group
     def hostgroup_add(hostgroup: nil, description: nil, all: false, params: {})
       raise ArgumentError, 'Hostgroup is required' unless hostgroup
       raise ArgumentError, 'description is required' unless description
@@ -122,10 +132,11 @@ module IPA
       api_post(method: 'hostgroup_add', item: hostgroup, params: params)
     end
 
-    #This method can be used to add a group member to a host group
+    # This method can be used to add a group member to a host group
     def hostgroup_add_member(hostgroup: nil, hostnames: nil, params: {})
       raise ArgumentError, 'Hostgroup is required' unless hostgroup
       raise ArgumentError, 'Hostnames is required' unless hostnames
+
       params[:all] = true
 
       if hostnames.kind_of?(Array)
@@ -138,7 +149,7 @@ module IPA
       api_post(method: 'hostgroup_add_member', item: hostgroup, params: params)
     end
 
-    #This method is used to add
+    # This method is used to add
     def host_add(hostname: nil, all: false, force: false, random: nil, userpassword: nil, params: {})
       raise ArgumentError, 'Hostname is required' unless hostname
 
@@ -162,17 +173,30 @@ module IPA
       api_post(method: 'host_find', item: hostname, params: params)
     end
 
+    # We have to be careful when working with parameter structs
+    # This is because if you set a value to nil it IPA may not
+    # auto generate the value even if it can
     def add_user(uid: nil, all: false, params: {})
       raise ArgumentError, 'UID is required' unless uid
-      raise ArgumentError, 'Given is required' unless params['givenname']
-      raise ArgumentError, 'Surname is required' unless params['sn']
-      raise ArgumentError, 'Common is required' unless params['cn']
-      #givenname: nil, sn: nil, cn: nil
+      raise ArgumentError, 'Given is required' unless params[:givenname]
+      raise ArgumentError, 'Surname is required' unless params[:sn]
+      raise ArgumentError, 'Common is required' unless params[:cn]
 
+      # Remove empty values from the string
+      params.compact!
 
+      # We can create a list of params then convert them to hash before passing them to the
+      # library. This can be done using value.to_h
       api_post(method: 'user_add', item: uid, params: params)
     end
 
+    def user_show(uid: nil, all: false, params: {})
+      raise ArgumentError, 'User uid is required' unless uid
+
+      params[:all] = all
+
+      api_post(method: 'user_show', item: uid, params: params)
+    end
 
     def host_show(hostname: nil, all: false, params: {})
       raise ArgumentError, 'Hostname is required' unless hostname
