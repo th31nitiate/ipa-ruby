@@ -2,8 +2,6 @@
 #
 #= FreeIPA Ruby client
 #
-# Author: m3rl1n th31nitiate
-#
 #== Capabilities
 #
 # This library works with ruby by enabling the communication and provisioning of objects with IPA via
@@ -27,7 +25,7 @@
 #   * It takes as arguments the API method, item and parameters relating to the method as input
 #   * To find what methods & parameters can be used you can view the API browser via IPA
 #
-#
+# Author: m3rl1n th31nitiate
 #
 #
 
@@ -40,12 +38,13 @@ require 'pry'
 # Not sure if the GSSAPI is fully functional requires further testing
 
 module IPA
+  # Client library for interacting with IPA updates to this lib are made as required due
+  # organisational changes or solutions require specific methods
   class Client
     attr_reader :uri, :http, :headers
 
     def initialize(host: nil, ca_cert: '/etc/ipa/ca.crt', username: nil, password: nil)
       raise ArgumentError, 'Missing FreeIPA host' unless host
-
 
       @uri = URI.parse("https://#{host}/ipa/session/json")
 
@@ -59,7 +58,7 @@ module IPA
         @credentials = { 'user' => username.to_s, 'password' => password.to_s }
       end
 
-      login(@uri.host)
+      login(@host)
     end
 
     # Need to change login username and password information
@@ -96,13 +95,13 @@ module IPA
     def api_post(method: nil, item: [], params: {})
       raise ArgumentError, 'Missing method in API request' unless method
 
-      if Time.new.to_i > @session_timeout then
-        login(@host)
-      end
+      login(@host) if Time.new.to_i > @session_timeout
 
       request = {}
       request[:method] = method
-      request[:params] = [[item || []], params]
+      request[:params] = [[item || []], params.to_h]
+      # This is how we create request params once all methods use structs 
+      # request[:params] = [[item || []], params.to_h]
       # We use a StandardError since it is based on the HTTP response code with a JSON payload definition
       begin
         resp = @http.post(@uri, request.to_json, @headers)
@@ -112,7 +111,7 @@ module IPA
       end
     end
 
-    # This method can be used to view Host avalible with in a group in IPA
+    # This method can be used to view Host available with in a group in IPA
     def hostgroup_show(hostgroup: nil,all: false, params: {})
       raise ArgumentError, 'Hostgroup is required' unless hostgroup
 
@@ -139,12 +138,8 @@ module IPA
 
       params[:all] = true
 
-      if hostnames.kind_of?(Array)
-        params[:host] = hostnames
-      end
-      if hostnames.kind_of?(String)
-        params[:host] = [hostnames]
-      end
+      params[:host] = hostnames if hostnames.kind_of?(Array)
+      params[:host] = [hostnames] if hostnames.kind_of?(String)
 
       api_post(method: 'hostgroup_add_member', item: hostgroup, params: params)
     end
@@ -196,6 +191,14 @@ module IPA
       params[:all] = all
 
       api_post(method: 'user_show', item: uid, params: params)
+    end
+
+    def certificate_req(csr: nil, params: {})
+      raise ArgumentError, 'CSR is required' unless csr
+      raise ArgumentError, 'Certificate principal is required' unless params[:principal]
+      raise ArgumentError, 'ProfileID is required' unless params[:profile_id]
+
+      api_post(method: 'cert_request', item: csr, params: params)
     end
 
     def host_show(hostname: nil, all: false, params: {})
