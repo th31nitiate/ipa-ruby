@@ -11,6 +11,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: gem install rspec
-          command: rspec
-      - ruby/bundle-install
+          name: Install rspec
+          command: gem install rspec
+      - run:
+          name: Run a quick test using rspec
+          command: gem install rspec
+
