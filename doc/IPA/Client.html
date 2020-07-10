@@ -55,52 +55,54 @@
 
   </div>
 
-  
+
 
   <div id="class-metadata">
-    
+
     <div id="parent-class-section" class="nav-section">
   <h3>Parent</h3>
 
-  
+
   <p class="link"><a href="../Object.html">Object</a>
-  
+
 </div>
 
-    
-    
+
+
     <!-- Method Quickref -->
 <div id="method-list-section" class="nav-section">
   <h3>Methods</h3>
 
   <ul class="link-list" role="directory">
-    
+
     <li ><a href="#method-c-new">::new</a>
-    
+
     <li ><a href="#method-i-add_user">#add_user</a>
-    
+
     <li ><a href="#method-i-api_post">#api_post</a>
-    
+
+    <li ><a href="#method-i-certificate_req">#certificate_req</a>
+
     <li ><a href="#method-i-host_add">#host_add</a>
-    
+
     <li ><a href="#method-i-host_del">#host_del</a>
-    
+
     <li ><a href="#method-i-host_exists-3F">#host_exists?</a>
-    
+
     <li ><a href="#method-i-host_find">#host_find</a>
-    
+
     <li ><a href="#method-i-host_show">#host_show</a>
-    
+
     <li ><a href="#method-i-hostgroup_add">#hostgroup_add</a>
-    
+
     <li ><a href="#method-i-hostgroup_add_member">#hostgroup_add_member</a>
-    
+
     <li ><a href="#method-i-hostgroup_show">#hostgroup_show</a>
-    
+
     <li ><a href="#method-i-login">#login</a>
-    
+
     <li ><a href="#method-i-user_show">#user_show</a>
-    
+
   </ul>
 </div>
 
@@ -113,24 +115,26 @@
   </h1>
 
   <section class="description">
-    
+
+<p><a href="Client.html"><code>Client</code></a> library for interacting with <a href="../IPA.html"><code>IPA</code></a> updates to this lib are made as required due organisational changes or solutions require specific methods</p>
+
   </section>
 
-  
+
   <section id="5Buntitled-5D" class="documentation-section">
-    
 
-    
 
-    
 
-    
+
+
+
+
     <section class="attribute-method-details" class="method-section">
       <header>
         <h3>Attributes</h3>
       </header>
 
-      
+
       <div id="attribute-i-headers" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">headers</span><span
@@ -138,12 +142,12 @@
         </div>
 
         <div class="method-description">
-        
-        
-        
+
+
+
         </div>
       </div>
-      
+
       <div id="attribute-i-http" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">http</span><span
@@ -151,12 +155,12 @@
         </div>
 
         <div class="method-description">
-        
-        
-        
+
+
+
         </div>
       </div>
-      
+
       <div id="attribute-i-uri" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">uri</span><span
@@ -164,45 +168,44 @@
         </div>
 
         <div class="method-description">
-        
-        
-        
+
+
+
         </div>
       </div>
-      
-    </section>
-    
 
-    
+    </section>
+
+
+
      <section id="public-class-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Class Methods</h3>
        </header>
 
-    
+
       <div id="method-c-new" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">new</span><span
             class="method-args">(host: nil, ca_cert: &#39;/etc/ipa/ca.crt&#39;, username: nil, password: nil)</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="new-source">
             <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 46</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">initialize</span>(<span class="ruby-value">host:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">ca_cert:</span> <span class="ruby-string">&#39;/etc/ipa/ca.crt&#39;</span>, <span class="ruby-value">username:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">password:</span> <span class="ruby-keyword">nil</span>)
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Missing FreeIPA host&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">host</span>
-
 
   <span class="ruby-ivar">@uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-node">&quot;https://#{host}/ipa/session/json&quot;</span>)
 
@@ -216,46 +219,46 @@
     <span class="ruby-ivar">@credentials</span> = { <span class="ruby-string">&#39;user&#39;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">username</span>.<span class="ruby-identifier">to_s</span>, <span class="ruby-string">&#39;password&#39;</span> <span class="ruby-operator">=&gt;</span> <span class="ruby-identifier">password</span>.<span class="ruby-identifier">to_s</span> }
   <span class="ruby-keyword">end</span>
 
-  <span class="ruby-identifier">login</span>(<span class="ruby-ivar">@uri</span>.<span class="ruby-identifier">host</span>)
+  <span class="ruby-identifier">login</span>(<span class="ruby-ivar">@host</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
      <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
        <header>
          <h3>Public Instance Methods</h3>
        </header>
 
-    
+
       <div id="method-i-add_user" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">add_user</span><span
             class="method-args">(uid: nil, all: false, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>We have to be careful when working with parameter structs This is because if you set a value to nil it <a href="../IPA.html"><code>IPA</code></a> may not auto generate the value even if it can</p>
-          
-          
 
-          
+          <p>We have to be careful when working with parameter structs This is because if you set a value to nil it <a href="../IPA.html"><code>IPA</code></a> may not auto generate the value even if it can</p>
+
+
+
+
           <div class="method-source-code" id="add_user-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 179</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 174</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">add_user</span>(<span class="ruby-value">uid:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">all:</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;UID is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">uid</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Given is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:givenname</span>]
@@ -270,45 +273,45 @@
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;user_add&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">uid</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-api_post" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">api_post</span><span
             class="method-args">(method: nil, item: [], params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>Consider using catch throw here when working with large amount os data</p>
-          
-          
 
-          
+          <p>Consider using catch throw here when working with large amount os data</p>
+
+
+
+
           <div class="method-source-code" id="api_post-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 96</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 95</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">item:</span> [], <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Missing method in API request&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">method</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@session_timeout</span> <span class="ruby-keyword">then</span>
-    <span class="ruby-identifier">login</span>(<span class="ruby-ivar">@host</span>)
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">login</span>(<span class="ruby-ivar">@host</span>) <span class="ruby-keyword">if</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@session_timeout</span>
 
   <span class="ruby-identifier">request</span> = {}
   <span class="ruby-identifier">request</span>[<span class="ruby-value">:method</span>] = <span class="ruby-identifier">method</span>
-  <span class="ruby-identifier">request</span>[<span class="ruby-value">:params</span>] = [[<span class="ruby-identifier">item</span> <span class="ruby-operator">||</span> []], <span class="ruby-identifier">params</span>]
+  <span class="ruby-identifier">request</span>[<span class="ruby-value">:params</span>] = [[<span class="ruby-identifier">item</span> <span class="ruby-operator">||</span> []], <span class="ruby-identifier">params</span>.<span class="ruby-identifier">to_h</span>]
+  <span class="ruby-comment"># This is how we create request params once all methods use structs</span>
+  <span class="ruby-comment"># request[:params] = [[item || []], params.to_h]</span>
   <span class="ruby-comment"># We use a StandardError since it is based on the HTTP response code with a JSON payload definition</span>
   <span class="ruby-keyword">begin</span>
     <span class="ruby-identifier">resp</span> = <span class="ruby-ivar">@http</span>.<span class="ruby-identifier">post</span>(<span class="ruby-ivar">@uri</span>, <span class="ruby-identifier">request</span>.<span class="ruby-identifier">to_json</span>, <span class="ruby-ivar">@headers</span>)
@@ -318,35 +321,72 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
+      <div id="method-i-certificate_req" class="method-detail ">
+
+        <div class="method-heading">
+          <span class="method-name">certificate_req</span><span
+            class="method-args">(csr: nil, params: {})</span>
+
+          <span class="method-click-advice">click to toggle source</span>
+
+        </div>
+
+
+        <div class="method-description">
+
+
+
+
+
+
+          <div class="method-source-code" id="certificate_req-source">
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 196</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">certificate_req</span>(<span class="ruby-value">csr:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">params:</span> {})
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;CSR is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">csr</span>
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Certificate principal is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:principal</span>]
+  <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;ProfileID is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value">:profile_id</span>]
+
+  <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;cert_request&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">csr</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+
+        </div>
+
+
+
+
+      </div>
+
+
       <div id="method-i-host_add" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">host_add</span><span
             class="method-args">(hostname: nil, all: false, force: false, random: nil, userpassword: nil, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>This method is used to add</p>
-          
-          
 
-          
+          <p>This method is used to add</p>
+
+
+
+
           <div class="method-source-code" id="host_add-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 153</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">host_add</span>(<span class="ruby-value">hostname:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">all:</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">force:</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">random:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">userpassword:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Hostname is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hostname</span>
 
@@ -358,70 +398,70 @@
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;host_add&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">hostname</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-host_del" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">host_del</span><span
             class="method-args">(hostname: nil, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="host_del-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 164</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 159</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">host_del</span>(<span class="ruby-value">hostname:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Hostname is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hostname</span>
 
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;host_del&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">hostname</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-host_exists-3F" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">host_exists?</span><span
             class="method-args">(hostname)</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="host_exists-3F-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 209</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 212</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">host_exists?</span>(<span class="ruby-identifier">hostname</span>)
   <span class="ruby-identifier">resp</span> = <span class="ruby-identifier">host_show</span>(<span class="ruby-value">hostname:</span> <span class="ruby-identifier">hostname</span>)
   <span class="ruby-keyword">if</span> <span class="ruby-identifier">resp</span>[<span class="ruby-string">&#39;error&#39;</span>]
@@ -431,70 +471,70 @@
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-host_find" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">host_find</span><span
             class="method-args">(hostname: nil, all: false, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="host_find-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 170</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 165</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">host_find</span>(<span class="ruby-value">hostname:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">all:</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">params</span>[<span class="ruby-value">:all</span>] = <span class="ruby-identifier">all</span>
 
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;host_find&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">hostname</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-host_show" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">host_show</span><span
             class="method-args">(hostname: nil, all: false, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="host_show-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 201</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 204</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">host_show</span>(<span class="ruby-value">hostname:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">all:</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Hostname is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hostname</span>
 
@@ -503,35 +543,35 @@
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;host_show&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">hostname</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-hostgroup_add" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">hostgroup_add</span><span
             class="method-args">(hostgroup: nil, description: nil, all: false, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>This method is used to create an empty host group</p>
-          
-          
 
-          
+          <p>This method is used to create an empty host group</p>
+
+
+
+
           <div class="method-source-code" id="hostgroup_add-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 125</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 124</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">hostgroup_add</span>(<span class="ruby-value">hostgroup:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">description:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">all:</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Hostgroup is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hostgroup</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;description is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">description</span>
@@ -542,80 +582,76 @@
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;hostgroup_add&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">hostgroup</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-hostgroup_add_member" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">hostgroup_add_member</span><span
             class="method-args">(hostgroup: nil, hostnames: nil, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>This method can be used to add a group member to a host group</p>
-          
-          
 
-          
+          <p>This method can be used to add a group member to a host group</p>
+
+
+
+
           <div class="method-source-code" id="hostgroup_add_member-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 136</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 135</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">hostgroup_add_member</span>(<span class="ruby-value">hostgroup:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">hostnames:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Hostgroup is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hostgroup</span>
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Hostnames is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hostnames</span>
 
   <span class="ruby-identifier">params</span>[<span class="ruby-value">:all</span>] = <span class="ruby-keyword">true</span>
 
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hostnames</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Array</span>)
-    <span class="ruby-identifier">params</span>[<span class="ruby-value">:host</span>] = <span class="ruby-identifier">hostnames</span>
-  <span class="ruby-keyword">end</span>
-  <span class="ruby-keyword">if</span> <span class="ruby-identifier">hostnames</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">String</span>)
-    <span class="ruby-identifier">params</span>[<span class="ruby-value">:host</span>] = [<span class="ruby-identifier">hostnames</span>]
-  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">params</span>[<span class="ruby-value">:host</span>] = <span class="ruby-identifier">hostnames</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">hostnames</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">Array</span>)
+  <span class="ruby-identifier">params</span>[<span class="ruby-value">:host</span>] = [<span class="ruby-identifier">hostnames</span>] <span class="ruby-keyword">if</span> <span class="ruby-identifier">hostnames</span>.<span class="ruby-identifier">kind_of?</span>(<span class="ruby-constant">String</span>)
 
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;hostgroup_add_member&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">hostgroup</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-hostgroup_show" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">hostgroup_show</span><span
             class="method-args">(hostgroup: nil,all: false, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>This method can be used to view Host avalible with in a group in <a href="../IPA.html"><code>IPA</code></a></p>
-          
-          
 
-          
+          <p>This method can be used to view Host available with in a group in <a href="../IPA.html"><code>IPA</code></a></p>
+
+
+
+
           <div class="method-source-code" id="hostgroup_show-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 116</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 115</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">hostgroup_show</span>(<span class="ruby-value">hostgroup:</span> <span class="ruby-keyword">nil</span>,<span class="ruby-value">all:</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;Hostgroup is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">hostgroup</span>
 
@@ -624,35 +660,35 @@
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;hostgroup_show&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">hostgroup</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-login" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">login</span><span
             class="method-args">(host)</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          <p>Need to change login username and password information</p>
-          
-          
 
-          
+          <p>Need to change login username and password information</p>
+
+
+
+
           <div class="method-source-code" id="login-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 66</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">login</span>(<span class="ruby-identifier">host</span>)
   <span class="ruby-comment"># Set the timeout to 15 minutes</span>
   <span class="ruby-ivar">@session_timeout</span> = (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">new</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">+</span> <span class="ruby-value">900</span>)
@@ -682,35 +718,35 @@
   <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;HTTP #{resp.status.to_s + &#39;:&#39; + resp.reason} Error authenticating user: #{resp.headers[&#39;X-IPA-Rejection-Reason&#39;]}&quot;</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
       <div id="method-i-user_show" class="method-detail ">
-        
+
         <div class="method-heading">
           <span class="method-name">user_show</span><span
             class="method-args">(uid: nil, all: false, params: {})</span>
-          
+
           <span class="method-click-advice">click to toggle source</span>
-          
+
         </div>
-        
+
 
         <div class="method-description">
-          
-          
-          
-          
 
-          
+
+
+
+
+
           <div class="method-source-code" id="user_show-source">
-            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 193</span>
+            <pre><span class="ruby-comment"># File lib/ipa/client.rb, line 188</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier ruby-title">user_show</span>(<span class="ruby-value">uid:</span> <span class="ruby-keyword">nil</span>, <span class="ruby-value">all:</span> <span class="ruby-keyword">false</span>, <span class="ruby-value">params:</span> {})
   <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-string">&#39;User uid is required&#39;</span> <span class="ruby-keyword">unless</span> <span class="ruby-identifier">uid</span>
 
@@ -719,17 +755,17 @@
   <span class="ruby-identifier">api_post</span>(<span class="ruby-value">method:</span> <span class="ruby-string">&#39;user_show&#39;</span>, <span class="ruby-value">item:</span> <span class="ruby-identifier">uid</span>, <span class="ruby-value">params:</span> <span class="ruby-identifier">params</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
-          
+
         </div>
 
-        
 
-        
+
+
       </div>
 
-    
+
     </section>
-  
+
   </section>
 
 </main>
@@ -740,4 +776,3 @@
   <p>Generated by <a href="https://ruby.github.io/rdoc/">RDoc</a> 6.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
-

@@ -226,4 +226,3 @@ Searcher.prototype = new function() {
     });
   }
 }
-

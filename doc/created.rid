@@ -1,7 +1,5 @@
-Wed, 08 Jul 2020 20:29:20 +0100
-./LICENSE	Tue, 16 Jun 2020 23:55:47 +0100
-./README.md	Tue, 16 Jun 2020 23:55:47 +0100
-./o3h-ruby-ipa-0.0.3.gem	Thu, 25 Jun 2020 23:37:05 +0100
-./lib/ipa/version.rb	Thu, 25 Jun 2020 23:14:06 +0100
-./lib/ipa/client.rb	Wed, 08 Jul 2020 18:59:00 +0100
-./lib/ipa/structs.rb	Wed, 08 Jul 2020 20:28:22 +0100
+Fri, 10 Jul 2020 21:01:21 +0100
+doc/js/searcher.js	Wed, 01 Jul 2020 05:05:44 +0100
+README.md	Tue, 16 Jun 2020 23:55:47 +0100
+.gitignore	Fri, 10 Jul 2020 20:23:19 +0100
+doc/IPA.html	Fri, 10 Jul 2020 21:01:07 +0100

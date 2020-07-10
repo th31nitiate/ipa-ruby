@@ -100,7 +100,7 @@ module IPA
       request = {}
       request[:method] = method
       request[:params] = [[item || []], params.to_h]
-      # This is how we create request params once all methods use structs 
+      # This is how we create request params once all methods use structs
       # request[:params] = [[item || []], params.to_h]
       # We use a StandardError since it is based on the HTTP response code with a JSON payload definition
       begin
